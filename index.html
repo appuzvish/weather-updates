@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="./style.css">
+<title>Weather App</title>
+<style>
+    body {
+        background-image: url(./images/cloud.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    #main {
+        padding: 20px;
+        border-radius: 5px;
+        
+    }
+
+    input {
+        width: 80%;
+        align-items: center;
+        padding: 10px;
+        margin: 20px;
+        margin-left: 40px;
+        /* margin-bottom: 10px; */
+        background-color: azure;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    button {
+        width: 40%;
+        align-items: center;
+        padding: 10px;
+        margin: 40px;
+        margin-left: 150px;
+        
+        /* margin-bottom: 10px; */
+        background-color: azure;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .weather{
+        position:absolute;
+        top: 0%;
+        left: 0%;
+    }
+
+    h1 {
+        color: white;
+        text-align: center;
+    }
+
+    p {
+        color: white;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d251482.71849941122!2d76.13612007394771!3d9.982331531145961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b080d514abec6bf%3A0xbd582caa5844192!2sKochi%2C%20Kerala!5e0!3m2!1sen!2sin!4v1701723923424!5m2!1sen!2sin" width="300" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p>
+
+<div id="main">
+    <div>
+        <h1 class="weather">Weather update</h1>
+       
+    </div>
+   
+  <div id="toggle">
+    <input type="text" id="city" placeholder="Enter city ">
+        <button id="btn" onclick="fetchWeather()">Search Weather</button>
+    </div>
+	<div>
+    <h1 id="city-name"></h1>
+    <p id="country"></p>
+    <p id="temperature"></p>
+    <p id="humidity"></p>
+    <p id="wind-speed"></p>
+    <p id="description"></p>
+     </div>
+</div>
+
+<script>
+    // Add JavaScript code here
+    async function fetchWeather() {
+		document.getElementById('toggle').style.display = 'none';
+        const city = document.getElementById('city').value;
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=8ac5c4d57ba6a4b3dfcf622700447b1e&units=metric`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            displayWeather(data);
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+        }
+    }
+    function displayWeather(data) {
+        const cityName = document.getElementById('city-name');
+        const country = document.getElementById('country');
+        const temperature = document.getElementById('temperature');
+        const humidity = document.getElementById('humidity');
+        const windSpeed = document.getElementById('wind-speed');
+        const description = document.getElementById('description');
+
+        cityName.textContent = data.name;
+        country.textContent = `Country : ${data.sys.country}`;
+        temperature.textContent = `Temperature: ${data.main.temp}°C`;
+        humidity.textContent = `Humidity: ${data.main.humidity}%`;
+        windSpeed.textContent = `Wind Speed: ${data.wind.speed} m/s`;
+        description.textContent = `Description: ${data.weather[0].description}`;
+    }
+</script>
+
+</body>
+</html>
